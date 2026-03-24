@@ -1,0 +1,137 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+/*
+solvers
+{
+    p
+    {
+        solver          GAMG;
+        tolerance       1e-06;
+        relTol          0.1;
+        smoother        GaussSeidel;
+    }
+
+    U
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        nSweeps         2;
+        tolerance       1e-08;
+        relTol          0.1;
+    }
+    //It is not a turbulent flow no more 
+    nuTilda
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        nSweeps         2;
+        tolerance       1e-08;
+        relTol          0.1;
+    } 
+}*/
+
+
+//This part is from the internet tutorial
+solvers
+{
+    p
+    {
+        solver GAMG;
+        tolerance 1e-04;
+        relTol 0.01;
+        smoother GaussSeidel;
+        nPreSweeps 0;
+        nPostSweeps 2;
+        cacheAgglomeration on;
+        agglomerator faceAreaPair;
+        nCellsInCoarsestLevel 1000;
+        mergeLevels 1;
+    }
+    U
+    //I changed the tolerance here from -05 to -06
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-08;
+        relTol          0;
+    }
+    pFinal
+    {
+        solver GAMG;
+        tolerance 1e-06;
+        relTol 0.0;
+        smoother GaussSeidel;
+        nPreSweeps 0;
+        nPostSweeps 2;
+        cacheAgglomeration on;
+        agglomerator faceAreaPair;
+        nCellsInCoarsestLevel 1000;
+        mergeLevels 1;
+    }
+    //Need to understand why he added this part regardless of the fact that we are talking about laminar flow
+    /*"(U|k|epsilon|omega|R|nuTilda)"
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        tolerance       1e-05;
+        relTol          0;
+    }*/
+
+}
+
+
+
+/*SIMPLE
+{
+    nNonOrthogonalCorrectors 0;
+
+    residualControl
+    {
+        p               1e-5;
+        U               1e-5;
+    }
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p               0.3;
+    }
+    equations
+    {
+        U               0.7;
+    }
+}*/
+
+//Using PISO instead from the internet tutorial 
+/*PISO
+{
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 0;
+    pRefCell        0;
+    pRefValue       0;
+}*/
+
+PISO
+{
+    nCorrectors       3;  // Number of corrector loops for pressure-velocity coupling
+    nNonOrthogonalCorrectors 1;  // Non-orthogonal correctors
+    momentumPredictor yes;  // Use the momentum predictor step
+    pRefPoint       (0 0 0);  // Coordinate of the reference point
+    pRefValue       0;       // Reference pressure value
+}
+// ************************************************************************* //

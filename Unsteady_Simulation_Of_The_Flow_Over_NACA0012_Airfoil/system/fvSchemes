@@ -1,0 +1,54 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//I am trying to use a second order scheme here, for crank Nicolson you can try from 0.5 to 1.0 to balamce between accuracy and stability 
+ddtSchemes
+{
+    default         backward;
+   //default         CrankNicolson 0.9;
+}
+
+//I copied everything here from the airfoil tutorial in the internet, I think the equations are correct, I need to check all the methods and make sure that I have chosen the correct one
+gradSchemes
+{
+    default         leastSquares;
+    grad(p)         leastSquares;
+}
+
+divSchemes
+{
+  default         none;
+  //div(phi,U)      Gauss LUST grad(U);
+  div(phi,U)      Gauss linear;
+  div((nuEff*dev2(T(grad(U))))) Gauss linear;
+}
+
+laplacianSchemes
+{
+      default         Gauss linear orthogonal;
+}
+
+interpolationSchemes
+{
+      default         linear;
+}
+
+snGradSchemes
+{
+    //default         uncorrected;
+    default           orthogonal;
+}
+// ************************************************************************* //
