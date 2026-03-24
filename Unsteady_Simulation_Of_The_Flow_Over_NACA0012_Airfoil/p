@@ -1,0 +1,49 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+dimensions      [0 2 -2 0 0 0 0];
+//Initializes the field to a uniform value of 0 across the entire domain.
+internalField   uniform 0;
+//I need to check for the last time that the boundary condition values are what we want
+boundaryField
+{
+    inlet
+    {
+        type            zeroGradient;
+        //type            freestreamPressure;
+        //freestreamValue uniform 0;
+    }
+    lowerwall
+    {
+        type            zeroGradient;
+    }
+    outlet
+    {
+        type            zeroGradient;
+        //type            fixedValue;
+        //value           uniform 0;
+        //type            freestreamPressure;
+        //freestreamValue $internalField;
+    }
+    upperwall
+    {
+        type            zeroGradient;
+    }
+    frontAndBackPlanes
+    {
+        type            empty;
+    }
+    
+}
+// ************************************************************************* //
