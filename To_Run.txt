@@ -1,0 +1,21 @@
+#You need to change the language here as well
+
+To run the simulation in parallel:
+
+First decompose the mesh, edit the file system/decomposeparDict and run
+
+    $ decomposePar
+
+    //To use 4 logical processors
+    $ mpirun -np 4 icoFoam -parallel > log 2>&1
+    
+    //To use 8 logical processors
+    $ mpirun --use-hwthread-cpus -np 8 icoFoam -parallel
+
+
+Reconstruct the case before viewing the results by running
+
+    $ reconstructPar
+
+Note:
+To run the script open: .... and do ...
