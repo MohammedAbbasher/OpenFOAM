@@ -1,21 +1,49 @@
-#You need to change the language here as well
+1. Mesh Generation:
 
-To run the simulation in parallel:
+	-The mesh for this case was generated using Pointwise and exported in Fluent format a AOA=0.cas
 
-First decompose the mesh, edit the file system/decomposeparDict and run
+	-A converted mesh in OpenFOAM format is already provided in 'constant/polyMesh'
 
-    $ decomposePar
+	-To convert the mesh manually from the .cas file:
 
-    //To use 4 logical processors
-    $ mpirun -np 4 icoFoam -parallel > log 2>&1
-    
-    //To use 8 logical processors
-    $ mpirun --use-hwthread-cpus -np 8 icoFoam -parallel
+		1.Navigate to the directory containing the mesh
+		2.Run the conversion utility:
+			fluentMeshToFoam AOA=0.cas
+
+2.Running the Case in Parallel:
+
+	2.1 Decompose the Domain
+
+		1.Edit the file:
+			system/decomposeParDict
+
+		2.Then run:
+			decomposePar
+
+	2.2 Run with 4 processors:
+
+			mpirun -np 4 icoFoam -parallel > log 2>&1
+
+	2.3 Run with 8 processors:
+
+			mpirun --use-hwthread-cpus -np 8 icoFoam -parallel > log 2>&1
 
 
-Reconstruct the case before viewing the results by running
+3.Post-Processing
 
-    $ reconstructPar
+	3.1 Reconstruct the Case
 
-Note:
-To run the script open: .... and do ...
+		Before visualizing results, reconstruct the decomposed case:
+
+			reconstructPar
+
+	3.2 Monitoring Aerodynamic Coefficients:
+
+		A Python script is provided with the case to compute and monitor aerodynamic coefficients (lift, drag, and moment) during the simulation.
+
+		Instructions:
+
+			1.Ensure the script is located in the same directory as the forceCoeffs file generated during the simulation.
+			2.Navigate to this directory.
+			3.Run the script:
+				python forceCoeffs.py
