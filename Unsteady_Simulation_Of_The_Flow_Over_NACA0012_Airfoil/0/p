@@ -21,9 +21,7 @@ boundaryField
     inlet
     {
         type            zeroGradient;
-        //type            freestreamPressure;
-        //freestreamValue uniform 0;
-    }
+        }
     lowerwall
     {
         type            zeroGradient;
@@ -31,10 +29,6 @@ boundaryField
     outlet
     {
         type            zeroGradient;
-        //type            fixedValue;
-        //value           uniform 0;
-        //type            freestreamPressure;
-        //freestreamValue $internalField;
     }
     upperwall
     {
