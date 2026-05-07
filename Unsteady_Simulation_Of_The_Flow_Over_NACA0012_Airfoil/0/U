@@ -29,9 +29,6 @@ boundaryField
     outlet
     {
     	type zeroGradient;
-    	//type               inletOutle
-        //type            freestreamVelocity;
-        //freestreamValue $internalField;
     }
     upperwall
     {
